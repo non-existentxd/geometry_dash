@@ -301,7 +301,7 @@ def death_screen():
     attempts += 1
     game_over = font.render("Game Over. [SPACE] to restart", True, WHITE)
 
-    screen.fill(pygame.Color("sienna1"))
+    screen.fill(pygame.Color("#5F9EA0"))
     screen.blits([[game_over, (100, 100)], [tip, (100, 400)]])
 
     wait_for_key()
