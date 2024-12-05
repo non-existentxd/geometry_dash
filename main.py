@@ -101,7 +101,7 @@ class Player(pygame.sprite.Sprite):
                         """if yvel is (-),player collided while jumping"""
                         self.rect.top = p.rect.bottom  # player top is set the bottom of block like it hits it head
                     else:
-                        """otherwise, if player collides with a block, he/she dies."""
+                        """otherwise, if player collides with a block, they die."""
                         self.vel.x = 0
                         self.rect.right = p.rect.left  # dont let player go through walls
                         self.died = True
@@ -153,9 +153,7 @@ class Draw(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
 
-#  ====================================================================================================================#
-#  classes of all obstacles. this may seem repetitive but it is useful(to my knowledge)
-#  ====================================================================================================================#
+# Overall Classes
 # children
 class Platform(Draw):
     """block"""
@@ -493,7 +491,7 @@ pygame.display.set_caption('Pydash: Geometry Dash in Python')
 text = font.render('image', False, (255, 255, 0))
 
 # music
-music = pygame.mixer_music.load(os.path.join("music", "bossfight-Vextron.mp3"))
+music = pygame.mixer_music.load(os.path.join("music", "level_music.mp3"))
 pygame.mixer_music.play()
 
 # bg image
