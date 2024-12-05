@@ -123,7 +123,7 @@ class Player(pygame.sprite.Sprite):
             if self.vel.y > 100: self.vel.y = 100
 
         # do x-axis collisions
-        self.collide(0, self.platforms)
+        self.collide(2, self.platforms)
 
         # increment in y direction
         self.rect.top += self.vel.y
