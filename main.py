@@ -491,7 +491,7 @@ pygame.display.set_caption('Pydash: Geometry Dash in Python')
 text = font.render('image', False, (255, 255, 0))
 
 # music
-music = pygame.mixer_music.load(os.path.join("music", "level_music.mp3"))
+music = pygame.mixer_music.load(os.path.join("music", "level_1music.mp3"))
 pygame.mixer_music.play()
 
 # bg image
