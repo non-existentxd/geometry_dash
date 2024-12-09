@@ -71,9 +71,9 @@ class Player(pygame.sprite.Sprite):
                 if isinstance(p, Orb) and (keys[pygame.K_UP] or keys[pygame.K_SPACE]):
                     pygame.draw.circle(alpha_surf, (255, 255, 0), p.rect.center, 18)
                     screen.blit(pygame.image.load("images/editor-0.9s-47px.gif"), p.rect.center)
-                    self.jump_amount = 12  
+                    self.jump_amount = 15  
                     self.jump()
-                    self.jump_amount = 10  
+                    self.jump_amount = 12  
 
                 if isinstance(p, End):
                     self.win = True
@@ -280,11 +280,14 @@ def won_screen():
     else:
         txt_win1 = f"level{level}"
         txt_win2 = f"Coins: {coins}/6. "
-    txt_win = f"{txt_win1} You beat {txt_win2}! Press SPACE to restart, or ESC to exit"
+    txt_win = f"{txt_win1} You beat {txt_win2}!"
+    rst_win = f"Press SPACE to restart, or ESC to exit"
 
     won_game = font.render(txt_win, True, BLUE)
+    rst_game = font.render(rst_win, True, BLUE)
 
     screen.blit(won_game, (200, 300))
+    screen.blit(rst_game, (200, 400))
     level += 1
 
     wait_for_key()
@@ -333,9 +336,9 @@ def start_screen():
     if not start:
         screen.fill(BLACK)
         if pygame.key.get_pressed()[pygame.K_1]:
-            level = 0
-        if pygame.key.get_pressed()[pygame.K_2]:
             level = 1
+        if pygame.key.get_pressed()[pygame.K_2]:
+            level = 2
 
         welcome = font.render(f"Welcome to Pydash. choose level({level + 1}) by keypad", True, WHITE)
 
@@ -360,6 +363,7 @@ def reset():
     init_level(
             block_map(
                     level_num=levels[level]))
+
 
 
 def move_map():
@@ -412,6 +416,8 @@ def wait_for_key():
                     waiting = False
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
+            if event.type == pygame.K_M:
+                pygame.mixer_music.pause()
 
 
 def coin_count(coins):
@@ -492,7 +498,10 @@ text = font.render('image', False, (255, 255, 0))
 
 # music
 music = pygame.mixer_music.load(os.path.join("music", "level_1music.mp3"))
-pygame.mixer_music.play()
+if music == 'm':
+    pygame.mixer_music.pause()
+else:
+    pygame.mixer_music.play()
 
 # bg image
 bg = pygame.image.load(os.path.join("images", "bg.png"))
@@ -501,7 +510,7 @@ bg = pygame.image.load(os.path.join("images", "bg.png"))
 player = Player(avatar, elements, (150, 150), player_sprite)
 
 # show tip on start and on death
-tip = font.render("tip: tap and hold for the first few seconds of the level", True, BLUE)
+tip = font.render("tip: ur cool; you got this!", True, BLUE)
 
 while not done:
     keys = pygame.key.get_pressed()
