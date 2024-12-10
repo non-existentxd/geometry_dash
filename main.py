@@ -288,7 +288,7 @@ def won_screen():
 
     screen.blit(won_game, (200, 300))
     screen.blit(rst_game, (200, 400))
-    level += 1
+    
 
     wait_for_key()
     reset()
@@ -362,7 +362,7 @@ def reset():
     player = Player(avatar, elements, (150, 150), player_sprite)
     init_level(
             block_map(
-                    level_num=levels[level]))
+                    levels[level])) 
 
 
 
@@ -398,7 +398,7 @@ def draw_stats(surf, money=0):
 def wait_for_key():
     """separate game loop for waiting for a key press while still running game loop
     """
-    global level, start
+    global level, start, mute
     waiting = True
     while waiting:
         clock.tick(60)
@@ -411,13 +411,13 @@ def wait_for_key():
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE or pygame.K_UP:
                     start = True
                     waiting = False
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
-            if event.type == pygame.K_M:
-                pygame.mixer_music.pause()
+                if event.key == pygame.K_m:
+                    mute = True
 
 
 def coin_count(coins):
@@ -497,8 +497,9 @@ pygame.display.set_caption('Pydash: Geometry Dash in Python')
 text = font.render('image', False, (255, 255, 0))
 
 # music
+mute = False
 music = pygame.mixer_music.load(os.path.join("music", "level_1music.mp3"))
-if music == 'm':
+if mute:
     pygame.mixer_music.pause()
 else:
     pygame.mixer_music.play()
