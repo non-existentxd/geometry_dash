@@ -279,10 +279,7 @@ def won_screen():
     txt_win1 = txt_win2 = "Nothing"
     if level == 0:
         txt_win1 = f"Coin{coins}/6! "
-        txt_win2 = "Congratulations! press space to go to level 2"
-        if pygame.key.get_pressed()[pygame.K_1]:
-            level = 2 
-            block_map(2)
+        txt_win2 = "Congratulations! press\n space a number(1,2,3)\n to go to another level"
     else: 
         txt_win1 = f"level{level}"
         txt_win2 = f"Coins: {coins}/6. "
@@ -306,7 +303,7 @@ def death_screen():
     fill = 0
     player_sprite.clear(player.image, screen)
     attempts += 1
-    game_over = font.render("Game Over. [SPACE] to restart", True, WHITE)
+    game_over = font.render("Game Over. [SPACE] to restart\nor press a number (1,2,3)\nto swap level", True, WHITE)
 
     screen.fill(pygame.Color("#5F9EA0"))
     screen.blits([[game_over, (100, 100)], [tip, (100, 400)]])
@@ -366,6 +363,8 @@ def reset():
 
     if level == 1:
         pygame.mixer.music.load(os.path.join("music", "castle-town.mp3"))
+    elif level == 0:
+        pygame.mixer.music.load(os.path.join("music", "level_1music.mp3"))
     
     print(level)
 
