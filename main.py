@@ -79,8 +79,7 @@ class Player(pygame.sprite.Sprite):
                     self.win = True
 
                 if isinstance(p, Spike):
-                    if pygame.sprite.collide_rect(self, p.spike_rect):
-                        self.died = True
+                    self.died = True
 
                 if isinstance(p, Coin):
                     coins += 1
@@ -167,8 +166,10 @@ class Spike(Draw):
     """spike"""
 
     def __init__(self, image, pos, *groups):
-        super().__init__(image, pos, *groups)
-        self.spike_rect = pygame.Rect(5,5,10,10)
+        super().__init__(image, (pos[0]+4, pos[1]+8), *groups)
+        
+
+
         
  
 
@@ -271,16 +272,18 @@ def blitRotate(surf, image, pos, originpos: tuple, angle: float):
 
 def won_screen():
     """show this screen when beating a level"""
-    global attempts, level, fill
+    global attempts, level, fill,start
     attempts = 0
     player_sprite.clear(player.image, screen)
     screen.fill(pygame.Color("yellow"))
     txt_win1 = txt_win2 = "Nothing"
-    if level == 1:
-        if coins == 6:
-            txt_win1 = f"Coin{coins}/6! "
-            txt_win2 = "the game, Congratulations"
-    else:
+    if level == 0:
+        txt_win1 = f"Coin{coins}/6! "
+        txt_win2 = "Congratulations! press space to go to level 2"
+        if pygame.key.get_pressed()[pygame.K_1]:
+            level = 2 
+            block_map(2)
+    else: 
         txt_win1 = f"level{level}"
         txt_win2 = f"Coins: {coins}/6. "
     txt_win = f"{txt_win1} You beat {txt_win2}!"
@@ -338,10 +341,12 @@ def start_screen():
     global level
     if not start:
         screen.fill(BLACK)
-        if pygame.key.get_pressed()[pygame.K_1]:
+        if pygame.key.get_pressed() == pygame.K_1:
             level = 1
-        if pygame.key.get_pressed()[pygame.K_2]:
+            print("pressed 1")
+        if pygame.key.get_pressed() == pygame.K_2:
             level = 2
+            print("pressed 2")
 
         welcome = font.render(f"Welcome to Pydash. choose level({level + 1}) by keypad", True, WHITE)
 
@@ -353,12 +358,17 @@ def start_screen():
         screen.blit(level_memo, (100, 200))
 
 
+
+
 def reset():
     """resets the sprite groups, music, etc. for death and new level"""
     global player, elements, player_sprite, level
 
     if level == 1:
         pygame.mixer.music.load(os.path.join("music", "castle-town.mp3"))
+    
+    print(level)
+
     pygame.mixer_music.play()
     player_sprite = pygame.sprite.Group()
     elements = pygame.sprite.Group()
@@ -392,7 +402,7 @@ def draw_stats(surf, money=0):
     fill += 0.5
     outline_rect = pygame.Rect(0, 0, BAR_LENGTH, BAR_HEIGHT)
     fill_rect = pygame.Rect(0, 0, fill, BAR_HEIGHT)
-    col = progress_colors[int(fill / 100)]
+    col = progress_colors[int(fill / 10000)]
     rect(surf, col, fill_rect, 0, 4)
     rect(surf, WHITE, outline_rect, 3, 4)
     screen.blit(tries, (BAR_LENGTH, 0))
@@ -414,6 +424,12 @@ def wait_for_key():
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    level = 0
+                    print("pressed key 2")
+                if event.key == pygame.K_2:
+                    level = 1
+                    print("pressed key 2")
                 if event.key == pygame.K_SPACE or pygame.K_UP:
                     start = True
                     waiting = False
@@ -459,10 +475,10 @@ alpha_surf = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
 # sprite groups
 player_sprite = pygame.sprite.Group()
 elements = pygame.sprite.Group()
-
+ 
 # images
 spike = pygame.image.load(os.path.join("images", "obj-spike.png"))
-spike = resize(spike)
+spike = resize(spike, (28, 24))
 coin = pygame.image.load(os.path.join("images", "coin.png"))
 coin = pygame.transform.smoothscale(coin, (32, 32))
 block = pygame.image.load(os.path.join("images", "block_1.png"))
