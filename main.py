@@ -79,8 +79,7 @@ class Player(pygame.sprite.Sprite):
                     self.win = True
 
                 if isinstance(p, Spike):
-                    if pygame.sprite.collide_rect(self, p.spike_rect):
-                        self.died = True
+                    self.died = True
 
                 if isinstance(p, Coin):
                     coins += 1
@@ -168,7 +167,8 @@ class Spike(Draw):
 
     def __init__(self, image, pos, *groups):
         super().__init__(image, pos, *groups)
-        self.spike_rect = pygame.Rect(5,5,10,10)
+        self.rect = pygame.Rect.scale_by(self.rect,0.4)
+        self.image = pygame.transform.scale(self.image,(40,40))
         
  
 
