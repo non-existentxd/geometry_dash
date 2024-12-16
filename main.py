@@ -279,21 +279,34 @@ def won_screen():
     attempts = 0
     player_sprite.clear(player.image, screen)
     screen.fill(pygame.Color("yellow"))
-    txt_win1 = txt_win2 = "Nothing"
-    if level == 0:
-        txt_win1 = f"Coin{coins}/6! "
-        txt_win2 = "Congratulations! press\n space a number(1,2,3)\n to go to another level"
-    else: 
-        txt_win1 = f"level{level}"
-        txt_win2 = f"Coins: {coins}/6. "
-    txt_win = f"{txt_win1} You beat {txt_win2}!"
-    rst_win = f"Press SPACE to restart, or ESC to exit"
+    
+    if level == 2:
+        txt_win_lvl = f"level {level+1}"
+        txt_win_coin = f"Coins: {coins}/6. "
+        txt_cong = "You beat the last level!"
 
-    won_game = font.render(txt_win, True, BLUE)
-    rst_game = font.render(rst_win, True, BLUE)
+        txt_win = f"{txt_win_coin} You beat {txt_win_lvl}!"
+        
 
-    screen.blit(won_game, (200, 300))
-    screen.blit(rst_game, (200, 400))
+    else:
+        txt_win1 = txt_win2 = "Nothing"
+        txt_win_lvl = f"level {level+1}"
+        txt_win_coin = f"Coins: {coins}/6. "
+        txt_win1 = "press space or a number(1,2,3)"
+        txt_win2 = "to go to another level"  
+        
+        txt_win = f"{txt_win_coin} You beat {txt_win_lvl}!"
+        rst_win = f"Press SPACE to restart level, or ESC to exit"
+
+        won_game = font.render(txt_win, True, BLUE)
+        num_game = font.render(txt_win1, True, BLUE)
+        swap_game = font.render(txt_win2, True, BLUE)
+        rst_game = font.render(rst_win, True, BLUE)
+
+        screen.blit(won_game, (150, 150))
+        screen.blit(num_game,(150,200))
+        screen.blit(swap_game, (150,250))
+        screen.blit(rst_game, (150, 500))
     
 
     wait_for_key()
@@ -304,12 +317,29 @@ def death_screen():
     """show this screenon death"""
     global attempts, fill
     fill = 0
-    player_sprite.clear(player.image, screen)
     attempts += 1
-    game_over = font.render("Game Over. [SPACE] to restart\nor press a number (1,2,3)\nto swap level", True, WHITE)
-
+    player_sprite.clear(player.image, screen)
     screen.fill(pygame.Color("#5F9EA0"))
-    screen.blits([[game_over, (100, 100)], [tip, (100, 400)]])
+    
+    txt_win1 = txt_win2 = "Nothing"
+    txt_win_lvl = f"level {level+1}"
+    txt_win_coin = f"Coins: {coins}/6. "
+    txt_win1 = "press space or a number(1,2,3)"
+    txt_win2 = "to go to another level"  
+    
+    txt_win = f"{txt_win_coin} You beat {txt_win_lvl}!"
+    rst_win = f"Press SPACE to restart, or ESC to exit"
+
+    won_game = font.render(txt_win, True, BLUE)
+    num_game = font.render(txt_win1, True, BLUE)
+    swap_game = font.render(txt_win2, True, BLUE)
+    rst_game = font.render(rst_win, True, BLUE)
+
+    screen.blit(won_game, (150, 150))
+    screen.blit(num_game,(150,200))
+    screen.blit(swap_game, (150,250))
+    screen.blit(rst_game, (150, 500))
+    screen.blit(tip, (150, 325))
 
     wait_for_key()
     reset()
@@ -343,19 +373,16 @@ def start_screen():
         screen.fill(BLACK)
         if pygame.key.get_pressed() == pygame.K_1:
             level = 1
-            print("pressed 1")
         if pygame.key.get_pressed() == pygame.K_2:
             level = 2
-            print("pressed 2")
 
-        welcome = font.render(f"Welcome to Pydash. choose level({level + 1}) by keypad", True, WHITE)
+        welcome = font.render(f"Welcome to Geometry dash. choose level", True, WHITE)
+        how = font.render(" by pressing your number keys.",True,WHITE)
 
-        controls = font.render("Controls: jump: Space/Up exit: Esc", True, GREEN)
+        controls = font.render("Controls:", True, GREEN)
+        button = font.render(" Jump with either space or up, press escape to exit", True, GREEN)
 
-        screen.blits([[welcome, (100, 100)], [controls, (100, 400)], [tip, (100, 500)]])
-
-        level_memo = font.render(f"Level {level + 1}.", True, (255, 255, 0))
-        screen.blit(level_memo, (100, 200))
+        screen.blits([[welcome, (150, 100)],[how,(200,150)], [controls, (350, 400)],[button,(100,450)], [tip, (225, 550)]])
 
 
 
@@ -369,8 +396,6 @@ def reset():
     elif level == 0:
         pygame.mixer.music.load(os.path.join("music", "level_1music.mp3"))
     
-    print(level)
-
     pygame.mixer_music.play()
     player_sprite = pygame.sprite.Group()
     elements = pygame.sprite.Group()
@@ -428,10 +453,8 @@ def wait_for_key():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
                     level = 0
-                    print("pressed key 2")
                 if event.key == pygame.K_2:
                     level = 1
-                    print("pressed key 2")
                 if event.key == pygame.K_SPACE or pygame.K_UP:
                     start = True
                     waiting = False
