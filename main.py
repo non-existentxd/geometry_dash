@@ -332,7 +332,6 @@ def death_screen():
     global attempts, fill, coins
     fill = 0
     attempts += 1
-    coins = 0
     player_sprite.clear(player.image, screen)
     screen.fill(pygame.Color("#5F9EA0"))
     
@@ -355,6 +354,7 @@ def death_screen():
     screen.blit(rst_game, (150, 500))
     screen.blit(tip, (150, 325))
 
+    coins = 0
     wait_for_key()
     reset()
 
