@@ -280,19 +280,33 @@ def won_screen():
     player_sprite.clear(player.image, screen)
     screen.fill(pygame.Color("yellow"))
     
-    if level == 2:
+    if level == 1:
         txt_win_lvl = f"level {level+1}"
         txt_win_coin = f"Coins: {coins}/6. "
-        txt_cong = "You beat the last level!"
+        txt_cong = font.render("You beat the last level!", True, BLUE)
+        txt_win = font.render(f"{txt_win_coin} You beat {txt_win_lvl}!",True,BLUE)
+        
+        txt_win1 = "press space or a number(1,2)"
+        txt_win2 = "to go to another level"
+        rst_win = f"Press SPACE to restart level, or ESC to exit" 
 
-        txt_win = f"{txt_win_coin} You beat {txt_win_lvl}!"
+        num_game = font.render(txt_win1, True, BLUE)
+        swap_game = font.render(txt_win2, True, BLUE)
+        rst_game = font.render(rst_win, True, BLUE)
+
+        screen.blit(swap_game, (150,350))
+        screen.blit(rst_game, (150, 500))
+        screen.blit(num_game,(150,300))
+        
+        screen.blit(txt_win,(150,150))
+        screen.blit(txt_cong,(150,250))
         
 
     else:
         txt_win1 = txt_win2 = "Nothing"
         txt_win_lvl = f"level {level+1}"
         txt_win_coin = f"Coins: {coins}/6. "
-        txt_win1 = "press space or a number(1,2,3)"
+        txt_win1 = "press space or a number(1,2)"
         txt_win2 = "to go to another level"  
         
         txt_win = f"{txt_win_coin} You beat {txt_win_lvl}!"
@@ -315,19 +329,19 @@ def won_screen():
 
 def death_screen():
     """show this screenon death"""
-    global attempts, fill
+    global attempts, fill, coins
     fill = 0
     attempts += 1
+    coins = 0
     player_sprite.clear(player.image, screen)
     screen.fill(pygame.Color("#5F9EA0"))
     
     txt_win1 = txt_win2 = "Nothing"
-    txt_win_lvl = f"level {level+1}"
     txt_win_coin = f"Coins: {coins}/6. "
-    txt_win1 = "press space or a number(1,2,3)"
+    txt_win1 = "press space or a number(1,2)"
     txt_win2 = "to go to another level"  
     
-    txt_win = f"{txt_win_coin} You beat {txt_win_lvl}!"
+    txt_win = f"{txt_win_coin}"
     rst_win = f"Press SPACE to restart, or ESC to exit"
 
     won_game = font.render(txt_win, True, BLUE)
